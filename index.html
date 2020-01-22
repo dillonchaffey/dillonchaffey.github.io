@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
+
   <script>
       var loc = window.location.href+'';
-      if (loc.indexOf('http://')==0){
+      if (loc.indexOf('http://d')==0){
           window.location.href = loc.replace('http://','https://');
       }  
   </script>  
+
   <meta charset="UTF-8">
   <title>Sydney Map</title>
 
@@ -16,7 +18,7 @@
   <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
     integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
     crossorigin=""></script>
-  </script>>
+  </script>
 
 </head>
 
@@ -44,22 +46,21 @@
 
 
     //  console.log("here")
+    const geo = navigator.geolocation;
+    geo.wifi.uri = 'https://location.services.mozilla.com/v1/geolocate?key=test'
 
-      console.dir(navigator.geolocation)
+    geo.getCurrentPosition(success, failure);
 
+    function success(position) {
+        lat = position.coords.latitude;
+        lng = position.coords.longitude;
+        console.log(lat + ',' + lng);
+        //mapView.setCenter(ol.proj.fromLonLat([lng, lat]));
+    }
 
-      if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(fetchPlaces, fetchPlaces);
-      } else {
-        console.log("Geolocation is not supported by this browser.")
-      }
-
-
-      function fetchPlaces(position) {
-        console.log("here")
-
-        console.dir(position)
-      }
+    function failure(error) {
+        console.log(error.message);
+    }
     });
 
 
