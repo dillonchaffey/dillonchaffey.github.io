@@ -1,105 +1,48 @@
 <!DOCTYPE html>
 <html>
 <head>
+	
+	<title>Globe</title>
 
-  <script>
-      var loc = window.location.href+'';
-      if (loc.indexOf('http://d')==0){
-          window.location.href = loc.replace('http://','https://');
-      }  
-  </script>  
-
-  <meta charset="UTF-8">
-  <title>Sydney Map</title>
-
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css"
-    integrity="sha512-xwE/Az9zrjBIphAcBb3F6JVqxf46+CDLwfLMHloNu6KEQCAWi6HcDUbeOfBIptF7tcCzusKFjFw2yuvEpDL9wQ=="
-    crossorigin="" />
-  <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"
-    integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="
-    crossorigin=""></script>
-  </script>
-
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	
+    <script src="https://cdn-webgl.wrld3d.com/wrldjs/dist/latest/wrld.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.0.1/leaflet.css" rel="stylesheet" />
+    
 </head>
-
 <body>
 
-  <style>
-    body,
-    html {
-      height: 100%;
+<style>
+    html, body { 
+        height: 100%; 
     }
-
-    #mapid {
-      height: 100%;
+    #mapDiv {
+    width: 100%;
+    height: 100%;
     }
-  </style>
+</style>
 
-
-  <div id="mapid"></div>
-
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-  <script>
-
-
-    $(document).ready(function () {
-
-
-    //  console.log("here")
-    const geo = navigator.geolocation;
-    geo.wifi.uri = 'https://location.services.mozilla.com/v1/geolocate?key=test'
-
-    geo.getCurrentPosition(success, failure);
-
-    function success(position) {
-        lat = position.coords.latitude;
-        lng = position.coords.longitude;
-        console.log(lat + ',' + lng);
-        //mapView.setCenter(ol.proj.fromLonLat([lng, lat]));
-    }
-
-    function failure(error) {
-        console.log(error.message);
-    }
-    });
+<div id="mapDiv"></div>
 
 
 
-    var mymap = L.map('mapid').setView([46.136, -60.1942], 13);
+<script>
+var map = L.Wrld.map('mapDiv', '492318f4e8e647bf1a86b1ec29813509', {
+    center: [46.136145, -60.193993],
+    zoom: 15
+});
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 19,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(mymap);
+// setTimeout(function() {
+//     map.setView([46.252487, -60.207351], 13, {
+//         headingDegrees: 270,
+//         animate: true,
+//         durationSeconds:5
+//     });
+// }, 5000);
+</script>
 
-    var marker = L.marker([46.140, -60.194]).addTo(mymap);
-    marker.bindPopup("<b>The best town!</b><br>Love sydney.");
 
-    var popup = L.popup();
 
-    var polyPoints = [];
-    window.polygon = '';
-
-    function onMapClick(e) {
-      //polyPoints.push([e.latlng.lat, e.latlng.lng]);
-
-      polyPoints.push(e.latlng);
-      popup
-        .setLatLng(e.latlng)
-        .setContent("Point #" + polyPoints.length + " at " + e.latlng.toString())
-        .openOn(mymap);
-
-      if (polyPoints.length > 2) {
-        if (polyPoints.length > 3) {
-          window.polygon.remove();
-        }
-        window.polygon = L.polygon(polyPoints).addTo(mymap);
-      }
-    }
-
-    mymap.on('click', onMapClick);
-
-  </script>
 </body>
-
 </html>
